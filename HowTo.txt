@@ -1,1 +1,7 @@
+To run the server:
 
+Save the code in a Python file, e.g., server.py.
+Install the required dependencies by running pip install requests.
+Run the server with the command python server.py.
+The server will prompt you to enter the airport code (ICAO).
+Once the server is running, it will be ready to handle client connections.
