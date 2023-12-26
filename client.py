@@ -49,7 +49,7 @@ while True:
     # Check if the client chose to quit
     if request_option == '5':
         break
-    
+    #GUI style
     root=Tk()
     b1=ttk.Button(root,text="Get data")
     b1.pack()
@@ -71,11 +71,11 @@ while True:
     root.columnconfigure(0,weight=1)
     root.columnconfigure(1,weight=1)
     root.columnconfigure(2,weight=1)
-
+     #Ask for username
     username_entry=ttk.Entry(root)
     username_entry.grid(row=0,coulmn=1,columnspan=3)
     def connect():
-       
+       #Select the option(GUI)
      OptionSelect=StringVar()
      ToSelect=ttk.label(root,text='select the option please')
     S1=ttk.Radiobutton(root,text='A.Arrived flights',variable=OptionSelect,value='A',command=toggle_entry_state)
@@ -83,7 +83,7 @@ while True:
     S1=ttk.Radiobutton(root,text='C.flights from specific city',variable=OptionSelect,value='C',command=toggle_entry_state)
     S1=ttk.Radiobutton(root,text='D. details of a particular flights',variable=OptionSelect,value='D',command=toggle_entry_state)
      
-
+    #Request and Quit 
     bRequest=ttk.Button(root,text='request',command=lambda:handle_connection(True))
     bQuit=ttk.Button(root,text='quit',command=destroy)
     bQuit.grid(row=3,column=1)
