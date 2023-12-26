@@ -1,8 +1,7 @@
 import re
+import hashlib
 import socket
-
-# Regular expression pattern for username validation
-username_pattern = r"^(?=.*[A-Z])(?=.*\d{2})[a-zA-Z\d]{8,}$"
+import sqlite3
 
 # Create a TCP/IP socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -11,13 +10,62 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = ('127.0.0.1', 4444)
 client_socket.connect(server_address)
 
-# Send client name to the server
+# Regular expression pattern for username validation
+username_pattern = r"^(?=.*[A-Z])(?=.*\d{2})[a-zA-Z\d]{8,}$"
+
+# Function to create and initialize the user database
+def initialize_user_database():
+    conn = sqlite3.connect('user_database.sqlite')
+    c = conn.cursor()
+
+    # Create the user table
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (username TEXT PRIMARY KEY, password_hash TEXT)''')
+
+    # Insert sample data
+    c.execute("INSERT OR IGNORE INTO users VALUES (?, ?)", ('Johndd99', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86'))
+    c.execute("INSERT OR IGNORE INTO users VALUES (?, ?)", ('AliceSm12', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413'))
+    c.execute("INSERT OR IGNORE INTO users VALUES (?, ?)", ('BobJoh23', '54c8e9ed836eb9622f6694876dabd83e44c6f7ce11cb97c9be368eaac9edc7cd3b8a78888129018ec4bdf2a2d4d83c6b7cae722c22615e9e1cf309c3e3e12ad2'))
+    c.execute("INSERT OR IGNORE INTO users VALUES (?, ?)", ('Mehmet87', 'bf88d23949f70225690a77c50974f48b5504cc8da2aef87b646af1e094b040ce7b08e67179a63eda12b5aacb85cb5f6280475f7ef295cf56b1fe05f54e8dad5a'))
+
+    conn.commit()
+    conn.close()
+
+# Function to retrieve user database from the database file
+def load_user_database():
+    conn = sqlite3.connect('user_database.db')
+    c = conn.cursor()
+
+    user_database = {}
+    c.execute("SELECT * FROM users")
+    rows = c.fetchall()
+    for row in rows:
+        username, password_hash = row
+        user_database[username] = password_hash
+
+    conn.close()
+    return user_database
+
+# Initialize the user database (only needed once)
+initialize_user_database()
+
+# Load user database from the database file
+user_database = load_user_database()
+
+# Send client name and password hash to the server
 while True:
     client_name = input("Enter Username: ")
+    password = input("Enter Password: ")
+
     if re.match(username_pattern, client_name):
-        break
+        if (
+            client_name in user_database and hashlib.sha512(password.encode()).hexdigest() == user_database[client_name]
+        ):
+            break
+        else:
+            print("Invalid username or password. Please try again.")
     else:
-        print("Invalid username. Please try again.")
+        print("Invalid username format. Please try again.")
 
 client_socket.send(client_name.encode('ascii'))
 
