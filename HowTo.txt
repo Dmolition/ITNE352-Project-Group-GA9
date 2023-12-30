@@ -13,7 +13,9 @@ To run  the client:
 1.Download SQLite Viewer Extension in VScode to view username and hashed password in human-readable format (optional)
 1-Verify if the user_database.sqlite file has been created
 2-The client try to establish the connection with the server and before that ensure that the server is online.
-3-Ask the user for the username and password for example  username:Johndd99  and password:password to establish the connection .Before that it is hashed using SHA-512 and  the username need to match the pattern.
+3-Client will prompt you to enter login credentials. Input the username and password for example  username:Johndd99  and password:password to establish the connection .Before that it is hashed using SHA-512 and  the username need to match the pattern.
 4-The client has the opportunity to select from one to five choices and send it to the server.
-5-Handle the server response.
-6-close the connection
+5-If you choose option 3 or 4, you will be required to input the departure IATA or the flight IATA. For example for OBBI, you can enter DEL for option 3, and GF131 for option 4 
+6-Handle the server response.
+7-close the connection
+Note: If incorrect output is produced ,try entering the option twice
