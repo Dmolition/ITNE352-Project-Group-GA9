@@ -83,12 +83,13 @@ client_socket.send(client_name.encode('ascii'))
 # Main loop for sending requests
 while True:
     # Prompt user for request option
-    print("\nRequest Options:")
-    print("1. Get all arrived flights")
-    print("2. Get all delayed flights")
-    print("3. Get flights from a specific airport")
-    print("4. Get details of a particular flight")
-    print("5. Quit")
+    print("\nRequest Options:😄")
+    print("1. Get all arrived flights😄")
+    print("2. Get all delayed flights😌 ")
+    print("3. Get flights from a specific airport😄")
+    print("4. Get details of a particular flight😄")
+    print("5. Quit😢") 
+    
     request_option = input("Enter request option (1-4) or '5' to quit: ")
 
     # Send request option to the server
