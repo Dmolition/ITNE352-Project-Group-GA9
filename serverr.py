@@ -68,7 +68,7 @@ def get_all_arrived_flights():
             arrived_flight = {
                 'Flight IATA Code': flight['flight']['iata'],
                 'Departure Airport': flight['departure']['airport'],
-                'Arrival Time': flight['arrival']['estimated'],
+                'Arrival Time': flight['arrival']['actual'],
                 'Arrival Terminal Number': flight['arrival']['terminal'],
                 'Arrival Gate': flight['arrival']['gate']
             }
