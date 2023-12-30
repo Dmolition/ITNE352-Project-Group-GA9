@@ -1,7 +1,19 @@
 To run the server:
 
-Save the code in a Python file, e.g., server.py.
-Install the required dependencies by running pip install requests.
-Run the server with the command python server.py.
-The server will prompt you to enter the airport code (ICAO).
-Once the server is running, it will be ready to handle client connections.
+1-Save the code in a Python file, e.g., server.py.
+2-Install the required dependencies by running pip install requests.
+3-Run the server with the command python server.py.
+4-The server will prompt you to enter the airport code (ICAO). Example inputs: OBBI(Bahrain) / LFRM(France)
+5-Once the server is running, it will be ready to handle client connections.
+
+
+
+To run  the client:
+
+1.Download SQLite Viewer Extension in VScode to view username and hashed password in human-readable format (optional)
+1-Verify if the user_database.sqlite file has been created
+2-The client try to establish the connection with the server and before that ensure that the server is online.
+3-Ask the user for the username and password for example  username:Johndd99  and password:password to establish the connection .Before that it is hashed using SHA-512 and  the username need to match the pattern.
+4-The client has the opportunity to select from one to five choices and send it to the server.
+5-Handle the server response.
+6-close the connection
