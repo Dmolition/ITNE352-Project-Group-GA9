@@ -3,6 +3,7 @@ import hashlib
 import socket
 import sqlite3
 import time
+import sys
 
 # Regular expression pattern for username validation
 username_pattern = r"^(?=.*[A-Z])(?=.*\d{2})[a-zA-Z\d]{8,}$"
@@ -64,63 +65,77 @@ user_database = load_user_database()
 
 # Send client name and password hash to the server
 while True:
-    client_name = input("Enter Username: ")
-    password = input("Enter Password: ")
+    try:
+        client_name = input("Enter Username: ")
+        password = input("Enter Password: ")
 
-    if re.match(username_pattern, client_name):
-        if (
-            client_name in user_database and hashlib.sha512(password.encode()).hexdigest() == user_database[client_name]
-        ):
-            break
+        if re.match(username_pattern, client_name):
+            if (
+                client_name in user_database and hashlib.sha512(password.encode()).hexdigest() == user_database[client_name]
+            ):
+                break
+            else:
+                print("Invalid username or password. Please try again.")
         else:
-            print("Invalid username or password. Please try again.")
-    else:
-        print("Invalid username format. Please try again.")
+            print("Invalid username format. Please try again.")
+
+    except KeyboardInterrupt:
+        print("\nProgram interrupted by user. Exiting...")
+        sys.exit(0)
 
 client_socket.send(client_name.encode('ascii'))
 
 
 # Main loop for sending requests
 while True:
-    # Prompt user for request option
-    print("\nRequest Options:😄")
-    print("1. Get all arrived flights😄")
-    print("2. Get all delayed flights😌 ")
-    print("3. Get flights from a specific airport😄")
-    print("4. Get details of a particular flight😄")
-    print("5. Quit😢") 
+    try:
+        # Prompt user for request option
+        print("\nRequest Options:😄")
+        print("1. Get all arrived flights😄")
+        print("2. Get all delayed flights😌 ")
+        print("3. Get flights from a specific airport😄")
+        print("4. Get details of a particular flight😄")
+        print("5. Quit😢") 
     
-    request_option = input("Enter request option (1-4) or '5' to quit: ")
+        request_option = input("Enter request option (1-4) or '5' to quit: ")
 
-    # Send request option to the server
-    client_socket.send(request_option.encode('ascii'))
+        # Send request option to the server
+        client_socket.send(request_option.encode('ascii'))
 
-    if request_option == '1':
-        pass
-    
-    elif request_option == '2':
-        pass
-
-    elif request_option == '3':
-        sAirportpara = input("Which city are flights coming from: ")
-        client_socket.send(sAirportpara.encode('ascii'))
+        if request_option == '1':
+            pass
         
-    
-    elif request_option == '4':
-        sFlightpara = input("Enter the flight IATA: ")
-        client_socket.send(sFlightpara.encode('ascii'))
-        
-    
-    # Check if the client chose to quit
-    elif request_option == '5':
-        # Receive and print the response from the server
-        print(f"{client_name} disconnected")
-        break
+        elif request_option == '2':
+            pass
 
-    # Handle the response from the server
-    response = client_socket.recv(4096).decode('ascii')
-    print("Server Response:")
-    print(response)
+        elif request_option == '3':
+            sAirportpara = input("Which city are flights coming from: ")
+            client_socket.send(sAirportpara.encode('ascii'))
+        
+        elif request_option == '4':
+            sFlightpara = input("Enter the flight IATA: ")
+            client_socket.send(sFlightpara.encode('ascii'))
+        
+        # Check if the client chose to quit
+        elif request_option == '5':
+            # Receive and print the response from the server
+            print(f"{client_name} disconnected")
+            break
+
+        # Handle the response from the server
+        response = client_socket.recv(4096).decode('ascii')
+        print("Server Response:")
+        print(response)
+
+    except ConnectionResetError:
+        print("The connection with the server was reset. Please try again.")
+    
+    except KeyboardInterrupt:
+        print("\nProgram interrupted by user. Exiting...")
+        sys.exit(0)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
 
 # Close the connection
 client_socket.close()
