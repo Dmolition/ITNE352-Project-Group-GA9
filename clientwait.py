@@ -131,7 +131,7 @@ while True:
         print("The connection with the server was reset. Please try again.")
     
     except KeyboardInterrupt:
-        print("\nProgram interrupted by user. Exiting...")
+        print("\nProgram forcelly stopped by user. Exiting...")
         sys.exit(0)
 
     except Exception as e:
